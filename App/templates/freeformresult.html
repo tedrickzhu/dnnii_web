@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import photo_card with context %}
+
+{% block title %}FreeForm{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="row">
+
+        {% if resultstatus %}
+                {% for modelresult in inpaintresult %}
+                    {{ photo_card(modelresult.inputimgpath,modelresult.algrithm+'_input') }}
+                    {{ photo_card(modelresult.resultimgpath,modelresult.algrithm+'_'+modelresult.modelname) }}
+                    {{ photo_card(modelresult.truthimgpath,modelresult.algrithm+'_truth') }}
+                {% endfor %}
+            {% else %}
+            <div class="row justify-content-md-center">
+                <div class="card w-50 bg-light">
+                    <img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/error.jpg') }}">
+                    <div class="card-body">
+                        <h5 class="card-title">500 Error</h5>
+                        <p class="card-text">Internal Server Error</p>
+                    </div>
+
+                </div>
+            </div>
+            {% endif %}
+
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pagination %}
+{% from 'macros.html' import photo_card with context %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-md-8">
+                <img src="{{ url_for('static', filename='images/index.jpg') }}" class="rounded img-fluid">
+            </div>
+            <div class="col-md-4 align-self-center">
+                <h1>Image Inpainting System</h1>
+                <p>Comparison of different iamge inpaint algorithms.</p>
+                <p>Inpaints your own broken image with different algrithm.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

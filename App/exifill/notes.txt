@@ -1,0 +1,47 @@
+1,同一个网络对不同数据集训练时使用的图片的尺寸不一样，同一个网络对同一个数据集也可能存在不同的尺寸
+
+同一个网络，同一个数据集，只用一个尺寸。
+
+2，同一个数据集，对于不同的网络，训练时的图片尺寸也可能不一样
+
+同一张图片输入每个网络前必须针对每个网络的尺寸调整输入图片的大小。
+
+
+1.模型的输入为两张不同的图片，同时，这两张图片是有关联关系的。对于某一个数据集，这个关联关系可以提前计算好存入某个文件中，训练的时候读取即可
+
+2.TensorFlow如何实现这种有关联关系的两张图片的batch输入训练方式，若不使用batch输入，则训练速度会非常低。
+
+输入数据为三元组，（imcomplete,complete,similarity）
+
+目前gmcnn的处理方式：传入参数为complete，mask，将mask和complete结合生成输入的imcomplete。
+
+在将数据集加入文件list和batch之前，根据关联关系，将相似图片组合成一个arraylist，然后传入网络，
+将图片丢入网络训练之前，再做拆分，拆分成两个图片，然后传入对应的输入结构中去。
+
+
+网络结构：shift——net 和 gmcnn 相结合
+
+
+统计当前目录下文件的数量
+find -type f |wc -l
+指定格式
+find -type f -name "*.jpg" |wc -l
+find -type f -name "*.png" |wc -l
+
+统计目录
+find -type d|wc -l
+
+裁剪places2数据集，生成新数据集
+#base5000
+nohup python -u build_ds.py --dataset /home/zhengyi_zhu/TrainData/MITPlace2Dataset/val_large/ --recutdir /home/zhengyi_zhu/TrainData/MITPlace2Dataset/base5000recut/ --readnums 5000 >output.log 2>&1 &
+#base all img
+nohup python -u build_ds.py --dataset /home/zhengyi_zhu/TrainData/MITPlace2Dataset/val_large/ --recutdir /home/zhengyi_zhu/TrainData/MITPlace2Dataset/allimgrecut/ >output.log 2>&1 &
+
+为数据集建立特征库
+nohup python -u build_ds_f.py --dataset /home/zhengyi_zhu/TrainData/MITPlace2Dataset/base5000recut/ --colorf /home/zhengyi_zhu/exi_inpaint/eximage/files/colorfeatures.csv --structf /home/zhengyi_zhu/exi_inpaint/eximage/files/structfeaturs.csv >output.log 2>&1 &
+
+相似图片配对,生成存储文件路径的TXT
+nohup python -u build_img_p.py --dataset /home/zhengyi_zhu/TrainData/MITPlace2Dataset/base5000recut/ --colorf /home/zhengyi_zhu/exi_inpaint/eximage/files/colorfeatures.csv --structf /home/zhengyi_zhu/exi_inpaint/eximage/files/structfeaturs.csv --imgfile /home/zhengyi_zhu/exi_inpaint/eximage/files/imgfile.txt --eximgfile /home/zhengyi_zhu/exi_inpaint/eximage/files/eximgfile.txt >output.log 2>&1 &
+
+#训练
+nohup python -u train.py --gpu_ids 0 --max_iters 40000 --batch_size 2 >trainoutput.log 2>&1 &

@@ -1,0 +1,72 @@
+{% from 'bootstrap/nav.html' import render_nav_item %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% block head %}
+        <title>{% block title %}{% endblock %} - ImageImpaint</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='icoimg/favicon.ico') }}">
+        {% block styles %}
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+            <link rel="stylesheet" href="{{ url_for('static', filename='open-iconic/font/css/open-iconic-bootstrap.css') }}">
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        {% endblock styles %}
+    {% endblock head %}
+</head>
+
+<body>
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="https://www.ruc.edu.cn/">
+                <img src="{{ url_for('static', filename='icoimg/ruclogo.jpg') }}">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+                    aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <div class="navbar-nav mr-auto">
+                    {{ render_nav_item('viewsblue.index', 'Home') }}
+                    {{ render_nav_item('viewsblue.centermask', 'Center-Mask') }}
+                    {{ render_nav_item('viewsblue.freeform', 'Free-Form') }}
+
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+<main>
+    <div class="container">
+
+        {% block content %}{% endblock %}
+        {% block footer %}
+            <footer>
+                <p class="float-left">
+                    <small>&copy; 2020
+                        <a href="https://github.com/tedrickzhu" title="Fork me on GitHub">Zhu-GitHub</a> -
+                        <a  title="A ImageImpainting project">ImageImpaint</a>
+                    </small>
+                </p>
+                <p class="float-right">
+                    <small>Capture and share every wonderful moment.</small>
+                </p>
+            </footer>
+        {% endblock %}
+    </div>
+</main>
+<div id="toast"></div>
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+{% endblock %}
+</body>
+</html>

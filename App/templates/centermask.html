@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pagination %}
+
+{% block title %}CenterMask{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-8">
+            <form action=""  method="post">
+                <table class="table table-bordered">
+                    <tr>
+                        <td><h5>Test Dataset Choose</h5></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="radio-inline"><input type="radio" name="dataset" id="radioparis"
+                                                                   value="pstreetview" onclick="radioChanged(this.value)">Paris-StreetView_256</label>
+                                <label class="radio-inline"><input type="radio" name="dataset" id="radioplaces"
+                                                                   value="places2" onclick="radioChanged(this.value)">Places2_256</label>
+                                <label class="radio-inline"><input type="radio" name="dataset" id="radiocelebahq"
+                                                                   value="celebahq" onclick="radioChanged(this.value)">CelebAHQ_256</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Test Image Choose
+                                <input id="choosedimg" name="choosedimg" value="" type="text"
+                                       placeholder="Choosed Image" readonly>
+                                <input id="submit" name="submit" type="submit" value="Run"></h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img id="img001" name="icoimg"
+                                 src="{{ url_for('static', filename='icoimg/ruclogo64.ico') }}" alt=""
+                                 class="img-rounded" onclick="imgChanged(this.id)">
+                            <img id="img002" name="icoimg"
+                                 src="{{ url_for('static', filename='icoimg/ruclogo64.ico') }}" alt=""
+                                 class="img-rounded" onclick="imgChanged(this.id)">
+                            <img id="img003" name="icoimg"
+                                 src="{{ url_for('static', filename='icoimg/ruclogo64.ico') }}" alt=""
+                                 class="img-rounded" onclick="imgChanged(this.id)">
+                            <img id="img004" name="icoimg"
+                                 src="{{ url_for('static', filename='icoimg/ruclogo64.ico') }}" alt=""
+                                 class="img-rounded" onclick="imgChanged(this.id)">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="col-md-4 align-self-center">
+            <h4>Comparison of Different Algorithms with Center-Mask</h4>
+            <p>Step1: Choose ONE base kind DATASET of test image.</p>
+            <p>Step2: Choose ONE test IMAGE.</p>
+            <p>Step3: Run inpainting program.</p>
+            <p>Step4: Compare different results of different algrithm.</p>
+        </div>
+    </div>
+
+    {% block centerresult %}{% endblock %}
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var runbutton = document.getElementById('runbutton'),
+        choosedimg = document.getElementById('choosedimg'),
+        img001 = document.getElementById('img001'),
+        img002 = document.getElementById('img002'),
+        img003 = document.getElementById('img003'),
+        img004 = document.getElementById('img004');
+
+    function radioChanged(value){
+        img001.src="/static/icoimg/"+value+"/001.ico";
+        img002.src="/static/icoimg/"+value+"/002.ico";
+        img003.src="/static/icoimg/"+value+"/003.ico";
+        img004.src="/static/icoimg/"+value+"/004.ico";
+    };
+
+    function imgChanged(value){
+        choosedimg.value=value;
+        choosedimg.placeholder=value;
+    };
+</script>
+{% endblock %}
