@@ -253,7 +253,7 @@ def edge_freeform_inp(basedata,dataset,imagepath,masklocs):
 		return False
 
 def exifill_freeform_inp(basedata,dataset, imagepath,prefillimgpath, masklocs):
-	if dataset in basedata.PRE_MODEL_DIR['exifill']['dataset']:
+	if (dataset in basedata.PRE_MODEL_DIR['exifill']['dataset']) and (prefillimgpath is not None):
 		imagepath = './App/static/' + imagepath
 		config = ExiFillOptions().parse(dataset=dataset, loadmodeldir=basedata.PRE_MODEL_DIR['exifill']['model'][dataset])
 		# config.dataset = dataset
@@ -294,12 +294,20 @@ def freeform_inp(basedata,imagepath, dataset, rectmasks,algrithm=None,):
 		'inpaintresult': []
 	}
 	if algrithm is None or algrithm=='None':
+
 		# run system use center mask with different algrithm model
 		gmcnn_result = gmcnn_freeform_inp(basedata,dataset, imagepath, masklocs)
 		deepfill_result = deepfill_freeform_inp(basedata,dataset, imagepath, masklocs)
 		edge_result = edge_freeform_inp(basedata,dataset, imagepath, masklocs)
 
-		prefillimgpath = './App/static/'+deepfill_result['resultimgpath']
+		if deepfill_result:
+			prefillimgpath = './App/static/'+deepfill_result['resultimgpath']
+		elif gmcnn_result:
+			prefillimgpath = './App/static/'+gmcnn_result['resultimgpath']
+		elif edge_result:
+			prefillimgpath = './App/static/'+edge_result['resultimgpath']
+		else:
+			prefillimgpath = None
 		exifill_result = exifill_freeform_inp(basedata,dataset,imagepath,prefillimgpath,masklocs)
 
 		if gmcnn_result:
