@@ -52,7 +52,7 @@ def deepfill_center_inp(basedata,dataset,imagepath,inputimgpath,resultimgpath):
 
 		maskpath = basedata.CENTER_MASK_256_DIR
 
-		deepfill_inpaint(imagepath=imagepath, maskinfo=maskpath, status=1, checkpointdir=checkpointdir,
+		deepfill_inpaint(img_shapes=None,imagepath=imagepath, maskinfo=maskpath, status=1, checkpointdir=checkpointdir,
 		                 inputimgpath=inputimgpath, outputpath=resultimgpath)
 
 		imagepath = imagepath.split('static/')[-1]
@@ -124,6 +124,30 @@ def edge_center_inp(basedata,dataset,imagepath,resultdir):
 	else:
 		return False
 
+def exifill_center_inp(basedata,dataset, imagepath,prefillimgpath):
+	if (dataset in basedata.PRE_MODEL_DIR['exifill']['dataset']) and (prefillimgpath is not None):
+		config = ExiFillOptions().parse(dataset=dataset, loadmodeldir=basedata.PRE_MODEL_DIR['exifill']['model'][dataset])
+		# config.dataset = dataset
+		# if dataset == 'places2':
+		config.img_shapes = basedata.PRE_MODEL_DIR['exifill']['imageshape'][dataset]
+
+		inputimgpath, outputimgpath = exifill_inpaint(basedata,imagepath, prefillimgpath,config, None)
+
+		imagepath = imagepath.split('static/')[-1]
+		inputimgpath = inputimgpath.split('static/')[-1]
+		outputimgpath = outputimgpath.split('static/')[-1]
+		exifill_result = {
+			'algrithm': 'exifill',
+			'modelname': basedata.PRE_MODEL_DIR['exifill']['modelname'][dataset],
+			'inputimgpath': inputimgpath,
+			'resultimgpath': outputimgpath,
+			'truthimgpath': imagepath,
+		}
+		return exifill_result
+	else:
+		return False
+
+
 
 def center_inp(basedata,dataset, imgno):
 	context = {
@@ -133,7 +157,7 @@ def center_inp(basedata,dataset, imgno):
 		'inpaintresult': []
 	}
 	imagepath = os.path.join(basedata.CENTER_IMG_DIR, dataset + '_256x256/' + imgno + '.png')
-	for algrithm in ['conenc','deepfill','edge','gmcnn']:
+	for algrithm in ['conenc','deepfill','edge','gmcnn','exifill']:
 		res_dir = os.path.join(basedata.CENTER_RES_DIR, 'temp_' + dataset + '_'+algrithm+'')
 		if os.path.exists(res_dir) is False:
 			os.mkdir(res_dir)
@@ -151,6 +175,18 @@ def center_inp(basedata,dataset, imgno):
 			conenc_result = conenc_center_inp(basedata,dataset,imagepath,inputimgpath,realimgpath,resultimgpath)
 		elif algrithm == 'edge':
 			edge_result = edge_center_inp(basedata,dataset,imagepath,res_dir)
+		elif algrithm == 'exifill':
+			# if deepfill_result:
+			# 	prefillimgpath = './App/static/' + deepfill_result['resultimgpath']
+			# elif gmcnn_result:
+			# 	prefillimgpath = './App/static/' + gmcnn_result['resultimgpath']
+			# elif edge_result:
+			# 	prefillimgpath = './App/static/' + edge_result['resultimgpath']
+			# elif conenc_result:
+			# 	prefillimgpath = './App/static/' + conenc_result['resultimgpath']
+			# else:
+			prefillimgpath = imagepath
+			exifill_result = exifill_center_inp(basedata, dataset, imagepath, prefillimgpath)
 
 	if gmcnn_result:
 		context['inpaintresult'].append(gmcnn_result)
@@ -160,6 +196,8 @@ def center_inp(basedata,dataset, imgno):
 		context['inpaintresult'].append(conenc_result)
 	if edge_result:
 		context['inpaintresult'].append(edge_result)
+	if exifill_result:
+		context['inpaintresult'].append(exifill_result)
 
 	if len(context['inpaintresult']) < 1:
 		context['resultstatus'] = 0
@@ -331,9 +369,10 @@ def freeform_inp(basedata,imagepath, dataset, rectmasks,algrithm=None,):
 		if edge_result:
 			context['inpaintresult'].append(edge_result)
 	elif algrithm == 'exifil':
-		deepfill_result = deepfill_freeform_inp(basedata, dataset, imagepath, masklocs)
-
-		prefillimgpath = './App/static/' + deepfill_result['resultimgpath']
+		# deepfill_result = deepfill_freeform_inp(basedata, dataset, imagepath, masklocs)
+		#
+		# prefillimgpath = './App/static/' + deepfill_result['resultimgpath']
+		prefillimgpath = imagepath
 		exifill_result = exifill_freeform_inp(basedata, dataset, imagepath, prefillimgpath, masklocs)
 		if exifill_result:
 			context['inpaintresult'].append(exifill_result)

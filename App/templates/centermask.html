@@ -35,16 +35,28 @@
                     <tr>
                         <td>
                             <img id="img001" name="icoimg"
-                                 src="{{ url_for('static', filename='icoimg/ruclogo64.ico') }}" alt=""
+                                 src="{{ url_for('static', filename='icoimg/001.ico') }}" alt=""
                                  class="img-rounded" onclick="imgChanged(this.id)">
                             <img id="img002" name="icoimg"
-                                 src="{{ url_for('static', filename='icoimg/ruclogo64.ico') }}" alt=""
+                                 src="{{ url_for('static', filename='icoimg/002.ico') }}" alt=""
                                  class="img-rounded" onclick="imgChanged(this.id)">
                             <img id="img003" name="icoimg"
-                                 src="{{ url_for('static', filename='icoimg/ruclogo64.ico') }}" alt=""
+                                 src="{{ url_for('static', filename='icoimg/003.ico') }}" alt=""
                                  class="img-rounded" onclick="imgChanged(this.id)">
                             <img id="img004" name="icoimg"
-                                 src="{{ url_for('static', filename='icoimg/ruclogo64.ico') }}" alt=""
+                                 src="{{ url_for('static', filename='icoimg/004.ico') }}" alt=""
+                                 class="img-rounded" onclick="imgChanged(this.id)">
+                            <img id="img005" name="icoimg"
+                                 src="{{ url_for('static', filename='icoimg/005.ico') }}" alt=""
+                                 class="img-rounded" onclick="imgChanged(this.id)">
+                            <img id="img006" name="icoimg"
+                                 src="{{ url_for('static', filename='icoimg/006.ico') }}" alt=""
+                                 class="img-rounded" onclick="imgChanged(this.id)">
+                            <img id="img007" name="icoimg"
+                                 src="{{ url_for('static', filename='icoimg/007.ico') }}" alt=""
+                                 class="img-rounded" onclick="imgChanged(this.id)">
+                            <img id="img008" name="icoimg"
+                                 src="{{ url_for('static', filename='icoimg/008.ico') }}" alt=""
                                  class="img-rounded" onclick="imgChanged(this.id)">
                         </td>
                     </tr>
@@ -73,12 +85,20 @@
         img002 = document.getElementById('img002'),
         img003 = document.getElementById('img003'),
         img004 = document.getElementById('img004');
+        img005 = document.getElementById('img005'),
+        img006 = document.getElementById('img006'),
+        img007 = document.getElementById('img007'),
+        img008 = document.getElementById('img008');
 
     function radioChanged(value){
         img001.src="/static/icoimg/"+value+"/001.ico";
         img002.src="/static/icoimg/"+value+"/002.ico";
         img003.src="/static/icoimg/"+value+"/003.ico";
         img004.src="/static/icoimg/"+value+"/004.ico";
+        img005.src="/static/icoimg/"+value+"/005.ico";
+        img006.src="/static/icoimg/"+value+"/006.ico";
+        img007.src="/static/icoimg/"+value+"/007.ico";
+        img008.src="/static/icoimg/"+value+"/008.ico";
     };
 
     function imgChanged(value){

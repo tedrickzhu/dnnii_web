@@ -75,7 +75,7 @@ class BaseData:
 				'dataset': ['places2'],
 				'model': {'pstreetview': './App/checkpoints/edge/psv',
 				          'celebahq': './App/checkpoints/edge/celeba',
-				          'places2': './App/checkpoints/exifill/places2_512'
+				          'places2': './App/checkpoints/exifill/0314'
 				          },
 				'modelname': {'pstreetview': 'paris-streetview',
 				              'celebahq': 'celeba',
@@ -83,7 +83,7 @@ class BaseData:
 				              },
 				'imageshape': {'pstreetview': [256,256,3],
 				              'celebahq': [256,256,3],
-				              'places2': [512,680,3]
+				              'places2': [256,256,3]
 				              }
 			}
 		}

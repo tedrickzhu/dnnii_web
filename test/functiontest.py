@@ -2,13 +2,13 @@
 # @Time    : 20-2-15 下午9:55
 # @Author  : zhuzhengyi
 
-def multiarg(*arg):
-	print(arg[0],arg[1])
-
-x=12
-y=56
-multiarg(x,y)
-# import time
+# def multiarg(*arg):
+# 	print(arg[0],arg[1])
+#
+# x=12
+# y=56
+# multiarg(x,y)
+# # import time
 # a = time.strftime('%Y%m%d%H%M%S')
 # print(type(a),a)
 
@@ -29,3 +29,15 @@ multiarg(x,y)
 # 	masklocs.append(onerect)
 # 	print(onerect,masklocs)
 # print(masklocs)
+
+import os,cv2
+
+imgsdir = '/home/zzy/dnnii_web/App/static/images/celebahq_256x256'
+
+filelist = os.listdir(imgsdir)
+for filename in filelist:
+	imgpth = os.path.join(imgsdir,filename)
+	respth = os.path.join(imgsdir,filename.split('.')[0]+'.png')
+	image = cv2.imread(imgpth)
+	# image = cv2.resize(image,(256,256))
+	cv2.imwrite(respth,image)

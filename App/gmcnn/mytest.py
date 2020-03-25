@@ -54,11 +54,13 @@ def gmcnn_inpaint(imagepath,config,masklocs=None):
             for rect in masklocs:
                 mask[rect[1]:rect[1]+rect[3], rect[0]:rect[0]+rect[2], :] = 1
         else:
-            mask = generate_mask_rect(config.img_shapes, config.mask_shapes, config.random_mask)
+            mask = generate_mask_rect((h,w), config.mask_shapes, config.random_mask)
+        print('this is img shap and mask shap:',image.shape,mask.shape)
 
         image = resize_img_eximg(image,config.img_shapes)
         mask = resize_img_eximg(mask,config.img_shapes)
         mask = mask[:,:,0:1]
+        print('this is img shap and mask shap:',image.shape,mask.shape)
 
         # cv2.imwrite(os.path.join(config.saving_path, 'gt_{:03d}.png'.format(i)), image.astype(np.uint8))
         image = image * (1-mask) + 255 * mask

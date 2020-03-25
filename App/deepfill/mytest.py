@@ -21,9 +21,10 @@ generative_inpainting 说明：
 '''
 
 def deepfill_inpaint(img_shapes,imagepath,maskinfo,status,checkpointdir,inputimgpath,outputpath):
-	basedata = BaseData()
-	FLAGS = ng.Config(join(basedata.DEEPFILL_BASE_DIR,'inpaint.yml'))
+	# basedata = BaseData()
+	# FLAGS = ng.Config(join(basedata.DEEPFILL_BASE_DIR,'inpaint.yml'))
 	# FLAGS = ng.Config('./inpaint.yml')
+	FLAGS = ng.Config('/home/zzy/work/dnnii_web/dnnii_web/App/deepfill/inpaint.yml')
 	# ng.get_gpus(1)
 	# args, unknown = parser.parse_known_args()
 

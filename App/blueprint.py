@@ -69,6 +69,7 @@ def freeform():
 
 		# 使用Opencv转换一下图片格式和名称
 		img = cv2.imread(upload_path)
+		img = cv2.resize(img,(256,256))
 
 		restoredir = os.path.join(basedata.UPLOAD_BASE_DIR,'restore')
 		if os.path.exists(restoredir) is False:

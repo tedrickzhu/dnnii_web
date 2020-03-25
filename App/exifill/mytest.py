@@ -26,7 +26,8 @@ def exifill_inpaint(basedata,imagepath,prefillimgpath, config, masklocs):
     else:
         print(type(basedata.BASEDATASET),basedata.BASEDATASET)
         eximgpath = basedata.BASEDATASET+repairlist[1]+'.png'
-
+    # eximgpath = imagepath
+    # print('this is imagepath',imagepath)
     model = GMCNNModel()
     print('this is after model create')
     reuse = False
@@ -37,7 +38,7 @@ def exifill_inpaint(basedata,imagepath,prefillimgpath, config, masklocs):
         input_eximage_tf = tf.placeholder(dtype=tf.float32, shape=[1, config.img_shapes[0], config.img_shapes[1], 3])
         input_mask_tf = tf.placeholder(dtype=tf.float32, shape=[1, config.img_shapes[0], config.img_shapes[1], 1])
 
-        output = model.evaluate(input_image_tf, input_eximage_tf,input_mask_tf, config=config, reuse=reuse)
+        output = model.evaluate(input_image_tf, input_eximage_tf,input_mask_tf, config=config, reuse=tf.AUTO_REUSE)
         output = (output + 1) * 127.5
         output = tf.minimum(tf.maximum(output[:, :, :, ::-1], 0), 255)
         output = tf.cast(output, tf.uint8)
@@ -48,7 +49,9 @@ def exifill_inpaint(basedata,imagepath,prefillimgpath, config, masklocs):
                               vars_list))
         sess.run(assign_ops)
         print('Model loaded.')
-        total_time = 0
+        # total_time = 0
+        image = cv2.imread(imagepath)
+        eximage = cv2.imread(eximgpath)
 
         if config.random_mask:
             np.random.seed(config.seed)
@@ -58,10 +61,8 @@ def exifill_inpaint(basedata,imagepath,prefillimgpath, config, masklocs):
             for rect in masklocs:
                 mask[rect[1]:rect[1]+rect[3], rect[0]:rect[0]+rect[2], :] = 1
         else:
+            # mask = generate_mask_rect(image.shape, config.mask_shapes, config.random_mask)
             mask = generate_mask_rect(config.img_shapes, config.mask_shapes, config.random_mask)
-
-        image = cv2.imread(imagepath)
-        eximage = cv2.imread(eximgpath)
 
         image = resize_img_eximg(image,config.img_shapes)
         eximage = resize_img_eximg(eximage,config.img_shapes)
