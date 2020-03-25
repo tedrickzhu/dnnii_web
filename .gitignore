@@ -12,6 +12,7 @@ snap-*
 *.pth
 *.pyc
 temp_*/
+tmp_*/
 temp/
 restore/
 examples/
