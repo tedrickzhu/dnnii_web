@@ -14,5 +14,9 @@ def resize_img_eximg(image,img_shapes):
     else:
         t = min(h, w)
         image = image[(h - t) // 2:(h - t) // 2 + t, (w - t) // 2:(w - t) // 2 + t, :]
+        # print(image.shape)
         image = cv2.resize(image, (img_shapes[1], img_shapes[0]))
+        # print(image.shape)
+        if len(image.shape)<3:
+            image = np.expand_dims(image, axis=2)
     return image

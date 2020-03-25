@@ -52,7 +52,7 @@ def deepfill_center_inp(basedata,dataset,imagepath,inputimgpath,resultimgpath):
 
 		maskpath = basedata.CENTER_MASK_256_DIR
 
-		deepfill_inpaint(img_shapes=None,imagepath=imagepath, maskinfo=maskpath, status=1, checkpointdir=checkpointdir,
+		deepfill_inpaint(basedata,imagepath=imagepath, maskinfo=maskpath, status=1, checkpointdir=checkpointdir,
 		                 inputimgpath=inputimgpath, outputpath=resultimgpath)
 
 		imagepath = imagepath.split('static/')[-1]
@@ -221,7 +221,7 @@ def deepfill_freeform_inp(basedata,dataset, imagepath, masklocs):
 		# print('thisisimagepath00000',basedata.UPLOAD_BASE_DIR,imagepath)
 		imagepath = os.path.join(basedata.UPLOAD_BASE_DIR,(imagepath.split('upload/')[-1]))
 		# print('thisisimagepathzzy',imagepath)
-		deepfill_inpaint(img_shapes=img_shapes,imagepath=imagepath, maskinfo=masklocs, status=0, checkpointdir=checkpointdir,
+		deepfill_inpaint(basedata,imagepath=imagepath, maskinfo=masklocs, status=0, checkpointdir=checkpointdir,
 		                 inputimgpath=inputimgpath, outputpath=resultimgpath)
 
 		imagepath = imagepath.split('static/')[-1]
