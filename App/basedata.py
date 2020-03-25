@@ -20,7 +20,8 @@ class BaseData:
 		# self.STRUCTUREFEATURESCSV = '/home/zzy/work/dnnii_web/dnnii_web/App/exifill/eximage/files/b500strucfeatures.csv'
 		self.COLORFEATURESCSV = '/home/zhengyi_zhu/dnnii_web/App/exifill/files/b500colorfeatures.csv'
 		self.STRUCTUREFEATURESCSV = '/home/zhengyi_zhu/dnnii_web/App/exifill/files/b500strucfeatures.csv'
-		self.BASEDATASET = '/home/zzy/TrainData/MITPlace2Dataset/base500recut/'
+		# self.BASEDATASET = '/home/zzy/TrainData/MITPlace2Dataset/base500recut/'
+		self.BASEDATASET = '/home/zhengyi_zhu/TrainData/MITPlace2Dataset/base500recut/'
 
 		self.ALLOWED_EXTENSIONS = set(['png', 'jpg', 'JPG', 'PNG', 'jpeg', 'JPEG'])
 
