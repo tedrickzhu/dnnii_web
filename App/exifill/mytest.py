@@ -7,14 +7,13 @@ import glob
 import tensorflow as tf
 from App.exifill.exigmcnn.util import generate_mask_rect, generate_mask_stroke
 from App.exifill.exigmcnn.network import GMCNNModel
-
 from App.exifill.eximage.util.build_img_pairs import get_img_pair
+from App.util.util import resize_img_eximg
 
 # os.environ['CUDA_VISIBLE_DEVICES']=str(np.argmax([int(x.split()[2]) for x in subprocess.Popen(
 #         "nvidia-smi -q -d Memory | grep -A4 GPU | grep Free", shell=True, stdout=subprocess.PIPE).stdout.readlines()]
 #         ))
-from App.util.util import resize_img_eximg
-
+# os.environ['CUDA_VISIBLE_DEVICES']='0'
 
 def exifill_inpaint(basedata,imagepath,prefillimgpath, config, masklocs):
     #get similirity image according to prefillimg
@@ -32,8 +31,10 @@ def exifill_inpaint(basedata,imagepath,prefillimgpath, config, masklocs):
     print('this is after model create')
     reuse = False
     sess_config = tf.ConfigProto()
-    sess_config.gpu_options.allow_growth = False
-    with tf.Session(config=sess_config) as sess:
+    sess_config.gpu_options.allow_growth = True
+    sess_config.gpu_options.per_process_gpu_memory_fraction = 0.1
+    exifill_graph = tf.Graph()
+    with tf.Session(config=sess_config, graph=exifill_graph) as exifill_sess:
         input_image_tf = tf.placeholder(dtype=tf.float32, shape=[1, config.img_shapes[0], config.img_shapes[1], 3])
         input_eximage_tf = tf.placeholder(dtype=tf.float32, shape=[1, config.img_shapes[0], config.img_shapes[1], 3])
         input_mask_tf = tf.placeholder(dtype=tf.float32, shape=[1, config.img_shapes[0], config.img_shapes[1], 1])
@@ -47,7 +48,7 @@ def exifill_inpaint(basedata,imagepath,prefillimgpath, config, masklocs):
         vars_list = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES)
         assign_ops = list(map(lambda x: tf.assign(x, tf.contrib.framework.load_variable(config.load_model_dir, x.name)),
                               vars_list))
-        sess.run(assign_ops)
+        exifill_sess.run(assign_ops)
         print('Model loaded.')
         # total_time = 0
         image = cv2.imread(imagepath)
@@ -84,12 +85,12 @@ def exifill_inpaint(basedata,imagepath,prefillimgpath, config, masklocs):
         eximage = np.expand_dims(eximage, 0)
         mask = np.expand_dims(mask, 0)
         # 将图片和蒙版图同时输入网络中，得到结果============================================
-        result = sess.run(output, feed_dict={input_image_tf: image, input_eximage_tf:eximage, input_mask_tf: mask})
+        result = exifill_sess.run(output, feed_dict={input_image_tf: image, input_eximage_tf:eximage, input_mask_tf: mask})
 
         outputimgpath = os.path.join(config.saving_path,
                                      "res_" + time.strftime('%Y%m%d%H%M%S') + '_' + imagepath.split("/")[-1])
         cv2.imwrite(outputimgpath, result[0][:, :, ::-1])
 
-        sess.close()
+        exifill_sess.close()
 
         return inputimgpath, outputimgpath

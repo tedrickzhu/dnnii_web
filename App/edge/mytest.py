@@ -28,7 +28,7 @@ def edgeinp(inputimg,maskinfo,status,checkpointdir,output):
 
 	config = load_config(inputimg,maskimgpath,checkpointdir,output)
 	# cuda visble devices
-	os.environ['CUDA_VISIBLE_DEVICES'] = ','.join(str(e) for e in config.GPU)
+	# os.environ['CUDA_VISIBLE_DEVICES'] = ','.join(str(e) for e in config.GPU)
 
 	# init device
 	if torch.cuda.is_available():
