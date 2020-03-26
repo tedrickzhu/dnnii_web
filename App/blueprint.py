@@ -58,7 +58,7 @@ def freeform():
 
 		if not (f and allowed_file(f.filename)):
 			return jsonify({"error": 1001, "msg": "请检查上传的图片类型，仅限于png、PNG、jpg、JPG、jpeg、JPEG"})
-		imgname = f.filename.split('.')[0]
+		# imgname = f.filename.split('.')[0]
 		# 注意：没有的文件夹一定要先创建，不然会提示没有该路径
 		uploaddir = os.path.join(basedata.UPLOAD_BASE_DIR,'temp')
 		if os.path.exists(uploaddir) is False:
@@ -74,7 +74,7 @@ def freeform():
 		restoredir = os.path.join(basedata.UPLOAD_BASE_DIR,'restore')
 		if os.path.exists(restoredir) is False:
 			os.mkdir(restoredir)
-		restorepath = 'upload/restore/'+imgname+time.strftime('%Y%m%d%H%M%S')+'.png'
+		restorepath = 'upload/restore/'+time.strftime('%Y%m%d%H%M%S')+'.png'
 		cv2.imwrite('./App/static/'+restorepath, img)
 		context={
 			'imagesize':[int(img.shape[0]),int(img.shape[1])],
@@ -93,9 +93,23 @@ def results():
 		dataset=request.form.get("chooseddataset")
 		algrithm=request.form.get("choosedalgrithm")
 		rectmasks=request.form.get("choosedmasks")
-		print(imagepath,dataset,algrithm,rectmasks)
+		print(imagepath,type(imagepath))
+		print(type(dataset),dataset,type(algrithm),algrithm)
+		print()
+		print('thisismasksloc:',type(rectmasks),rectmasks)
 		#不支持该属性
 		# print(request.is_xhr)
+		if dataset=='None' or dataset is None or dataset=='':
+			dataset='places2'
+		if rectmasks is None or rectmasks=='None' or rectmasks=='':
+			# context=freeform_inp(basedata,imagepath,dataset,rectmasks,algrithm)
+			context = {
+				'imagesize': [256,256],
+				'imagepath': imagepath,
+				'dataset': dataset,
+				'algrithm': algrithm
+			}
+			return render_template("freeformcanvas.html", **context)
 
 		context=freeform_inp(basedata,imagepath,dataset,rectmasks,algrithm)
 
