@@ -37,6 +37,9 @@ def centermask():
 	else:
 		dataset = request.form.get("dataset")
 		testimg = request.form.get("choosedimg")
+		if dataset is None or dataset=='None' or dataset=='' or testimg is None or testimg=='None' or testimg=='':
+			return render_template("centermask.html")
+
 		imgno = testimg[3:]
 		context = center_inp(basedata,dataset,imgno)
 		return render_template("centerresult.html",**context)

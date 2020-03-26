@@ -1,2 +1,2 @@
 source activate dnnii_web_gpu
-nohup python manage.py runserver -h 0.0.0.0 -p 5555 >output.log 2>&1 &
+nohup python -u manage.py runserver -h 0.0.0.0 -p 5555 >output.log 2>&1 &
