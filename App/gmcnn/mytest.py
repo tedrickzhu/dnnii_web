@@ -24,7 +24,7 @@ def gmcnn_inpaint(imagepath,config,masklocs=None):
     # reuse = False
     sess_config = tf.ConfigProto()
     sess_config.gpu_options.allow_growth = True
-    sess_config.gpu_options.per_process_gpu_memory_fraction = 0.1
+    sess_config.gpu_options.per_process_gpu_memory_fraction = 0.2
 
     gmcnn_graph = tf.Graph()
     with tf.Session(config=sess_config,graph=gmcnn_graph) as gmcnn_sess:
