@@ -93,10 +93,8 @@ def results():
 		dataset=request.form.get("chooseddataset")
 		algrithm=request.form.get("choosedalgrithm")
 		rectmasks=request.form.get("choosedmasks")
-		print(imagepath,type(imagepath))
-		print(type(dataset),dataset,type(algrithm),algrithm)
-		print()
-		print('thisismasksloc:',type(rectmasks),rectmasks)
+		print('this is parameters:',type(rectmasks),rectmasks,imagepath,type(imagepath),type(dataset),dataset,type(algrithm),algrithm)
+
 		#不支持该属性
 		# print(request.is_xhr)
 		if dataset=='None' or dataset is None or dataset=='':
