@@ -31,7 +31,8 @@ def buildimgpairs(dataset,colorIndexPath,structureIndexPath,imgfilepath,eximgfil
 		parameterlist.append([filelist[i],colorIndexPath,structureIndexPath])
 
 	pairlist = pool.map(get_img_pair,parameterlist)
-
+	# res = pool.
+	# pool.close()
 	with open('./imgandeximg.txt','a+') as imgandeximg:
 		with open(imgfilepath, "a+") as imgfile:
 			with open(eximgfilepath,'a+') as eximgfile:

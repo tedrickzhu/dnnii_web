@@ -3,6 +3,7 @@
 # @Author  : zhuzhengyi
 import os,time
 import cv2
+from multiprocessing import Process,Queue
 
 from flask import Blueprint, jsonify, url_for
 from flask import render_template,request,redirect
@@ -42,6 +43,11 @@ def centermask():
 
 		imgno = testimg[3:]
 		context = center_inp(basedata,dataset,imgno)
+		# queue = Queue
+		# p = Process(target=center_inp, args=(basedata,dataset,imgno,queue))  # 新训练
+		# p.start()
+		# p.join()
+		# context = queue.get()
 		return render_template("centerresult.html",**context)
 
 '''
@@ -113,6 +119,10 @@ def results():
 			return render_template("freeformcanvas.html", **context)
 
 		context=freeform_inp(basedata,imagepath,dataset,rectmasks,algrithm)
-
+		# queue = Queue
+		# p = Process(target=freeform_inp, args=(basedata, imagepath, dataset, rectmasks, queue, algrithm))
+		# p.start()
+		# p.join()
+		# context = queue.get()
 		return render_template("freeformresult.html",**context)
 		# return redirect(url_for("viewsblue.results"))

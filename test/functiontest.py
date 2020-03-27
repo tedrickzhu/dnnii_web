@@ -30,14 +30,29 @@
 # 	print(onerect,masklocs)
 # print(masklocs)
 
-import os,cv2
+# import os,cv2
+#
+# imgsdir = '/home/zzy/dnnii_web/App/static/images/celebahq_256x256'
+#
+# filelist = os.listdir(imgsdir)
+# for filename in filelist:
+# 	imgpth = os.path.join(imgsdir,filename)
+# 	respth = os.path.join(imgsdir,filename.split('.')[0]+'.png')
+# 	image = cv2.imread(imgpth)
+# 	# image = cv2.resize(image,(256,256))
+# 	cv2.imwrite(respth,image)
 
-imgsdir = '/home/zzy/dnnii_web/App/static/images/celebahq_256x256'
+from multiprocessing import Process
 
-filelist = os.listdir(imgsdir)
-for filename in filelist:
-	imgpth = os.path.join(imgsdir,filename)
-	respth = os.path.join(imgsdir,filename.split('.')[0]+'.png')
-	image = cv2.imread(imgpth)
-	# image = cv2.resize(image,(256,256))
-	cv2.imwrite(respth,image)
+def train(a,b):
+	print('asdfasdfasdf')
+	print(a,type(a),b,type(b))
+
+if __name__=='__main__': # 在windows必须在这句话下面开启多进程
+	# p = Process(target=train)
+	# p.start()
+	# p.join() # 进程结束后，GPU显存会自动释放
+	kwargs = {'a':'asdf','b':'qwer'}
+	p = Process(target=train,kwargs=kwargs) #新训练
+	p.start()
+	p.join()

@@ -2,6 +2,7 @@
 # @Time    : 20-2-10 下午10:12
 # @Author  : zhuzhengyi
 import os, time
+# from multiprocessing import Process,Pool
 
 from App.conenc.mytest import conenc_inp
 from App.deepfill.mytest import deepfill_inpaint
@@ -204,6 +205,7 @@ def center_inp(basedata,dataset, imgno):
 	else:
 		context['resultstatus'] = 1
 
+	# queue.put(context)
 	return context
 
 
@@ -315,7 +317,7 @@ def exifill_freeform_inp(basedata,dataset, imagepath,prefillimgpath, masklocs):
 		return False
 
 
-def freeform_inp(basedata,imagepath, dataset, rectmasks,algrithm=None,):
+def freeform_inp(basedata,imagepath, dataset, rectmasks,algrithm=None):
 	rectmasks = [int(float(pix)) for pix in rectmasks.split(',')]
 	masklocs = []
 	for num in range(0, len(rectmasks) - 3, 4):
@@ -381,5 +383,5 @@ def freeform_inp(basedata,imagepath, dataset, rectmasks,algrithm=None,):
 		context['resultstatus'] = 0
 	else:
 		context['resultstatus'] = 1
-
+	# queue.put(context)
 	return context
